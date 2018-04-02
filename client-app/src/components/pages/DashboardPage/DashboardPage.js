@@ -15,7 +15,7 @@ class DashboardPage extends React.Component {
     },
     sort: {
       field: '',
-      direction: true
+      direction: false
     }
     // loading: false,
   }
