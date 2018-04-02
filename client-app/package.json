@@ -1,6 +1,7 @@
 {
   "name": "task-manager",
   "version": "0.1.0",
+  "homepage": "https://ktrygub.github.io/task-manager/",
   "private": true,
   "dependencies": {
     "axios": "^0.18.0",
@@ -15,7 +16,8 @@
     "redux-thunk": "^2.2.0",
     "reselect": "^3.0.1",
     "semantic-ui-css": "^2.3.1",
-    "semantic-ui-react": "^0.79.0"
+    "semantic-ui-react": "^0.79.0",
+    "validator": "^9.4.1"
   },
   "scripts": {
     "start": "react-scripts start",
