@@ -1,6 +1,7 @@
 import React from 'react'
 import axios from 'axios'
 import PropTypes from 'prop-types'
+import md5 from 'md5'
 
 import AddNewTask from './AddNewTask'
 import TaskSortPanel from './TaskSortPanel'
@@ -17,11 +18,63 @@ class DashboardPage extends React.Component {
       field: '',
       direction: false
     }
-    // loading: false,
   }
 
   componentWillMount() {
     this.getTaskPage(this.props.match.params.page)
+  }
+
+  onStatusChange = task => {
+    const paramsString = `status=${task.status === 0 ? 10 : 0}&token=beejee`
+    const signature = md5(paramsString)
+
+    const payload = new FormData()
+    payload.append('status', task.status === 0 ? 10 : 0)
+    payload.append('token', 'beejee')
+    payload.append('signature', signature)
+    axios
+      .post(
+        `https://uxcandy.com/~shapoval/test-task-backend/edit/${
+          task.id
+        }?developer=KonstantinTrigub`,
+        payload
+      )
+      .then(() => this.getTaskPage(this.props.match.params.page))
+  }
+
+  onTaskTextChange = (e, task) => {
+    this.setState(
+      {
+        data: {
+          tasks: [
+            ...this.state.data.tasks.map(
+              t => (t.id === task.id ? { ...t, text: e.target.value } : t)
+            )
+          ],
+          total: this.state.data.total
+        }
+      },
+      () => {
+        clearTimeout(this.timer)
+        this.timer = setTimeout(() => {
+          const currTask = this.state.data.tasks.find(t => t.id === task.id)
+
+          const { id, text } = currTask
+          const paramsString = `text=${encodeURIComponent(text)}&token=beejee`
+          const signature = md5(paramsString)
+          const payload = new FormData()
+          payload.append('text', text)
+          payload.append('token', 'beejee')
+          payload.append('signature', signature)
+          axios
+            .post(
+              `https://uxcandy.com/~shapoval/test-task-backend/edit/${id}?developer=KonstantinTrigub`,
+              payload
+            )
+            .then(() => this.getTaskPage(this.props.match.params.page))
+        }, 1000)
+      }
+    )
   }
 
   getTotalPages = () => parseInt((this.state.data.total - 1) / 3, 10) + 1
@@ -62,7 +115,11 @@ class DashboardPage extends React.Component {
       <React.Fragment>
         <TaskSortPanel sortFunc={this.sortTaskByField} />
 
-        <TaskList tasks={this.state.data.tasks} />
+        <TaskList
+          tasks={this.state.data.tasks}
+          onStatusChange={this.onStatusChange}
+          onTaskTextChange={this.onTaskTextChange}
+        />
 
         <DashboardPagination
           activePage={Number(this.props.match.params.page)}

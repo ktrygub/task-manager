@@ -3,9 +3,16 @@ import PropTypes from 'prop-types'
 import { Container } from 'semantic-ui-react'
 import TaskCard from '../../cards/TaskCard'
 
-const TaskList = ({ tasks }) => (
+const TaskList = ({ tasks, onStatusChange, onTaskTextChange }) => (
   <Container style={{ height: '394px' }}>
-    {tasks.map(task => <TaskCard key={task.id} task={task} />)}
+    {tasks.map(task => (
+      <TaskCard
+        key={task.id}
+        task={task}
+        onStatusChange={onStatusChange}
+        onTaskTextChange={onTaskTextChange}
+      />
+    ))}
   </Container>
 )
 TaskList.propTypes = {
@@ -18,6 +25,8 @@ TaskList.propTypes = {
       status: PropTypes.number.isRequired,
       image_path: PropTypes.string.isRequired
     }).isRequired
-  ).isRequired
+  ).isRequired,
+  onStatusChange: PropTypes.func.isRequired,
+  onTaskTextChange: PropTypes.func.isRequired
 }
 export default TaskList

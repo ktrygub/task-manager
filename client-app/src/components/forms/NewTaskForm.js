@@ -110,7 +110,9 @@ class NewTaskForm extends React.Component {
     return (
       <Segment inverted loading={loading}>
         <Form unstackable inverted onSubmit={this.onSubmit}>
-          <Form.Group style={{ justifyContent: 'space-between', textAlign: 'left' }}>
+          <Form.Group
+            style={{ justifyContent: 'space-between', textAlign: 'left' }}
+          >
             <Form.Field required width={5} error={!!errors.username}>
               <label htmlFor="username">Username</label>
               <input
@@ -153,7 +155,9 @@ class NewTaskForm extends React.Component {
             </Form.Group>
           </Form.Group>
 
-          <Form.Group style={{ justifyContent: 'space-between', textAlign: 'left' }}>
+          <Form.Group
+            style={{ justifyContent: 'space-between', textAlign: 'left' }}
+          >
             <Form.Field required width={9} error={!!errors.text}>
               <label htmlFor="text">Task Description</label>
               <Form.TextArea

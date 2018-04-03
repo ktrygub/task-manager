@@ -1,8 +1,15 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Segment, Image, Grid, Divider } from 'semantic-ui-react'
+import {
+  Segment,
+  Image,
+  Grid,
+  Divider,
+  Button,
+  TextArea
+} from 'semantic-ui-react'
 
-const TaskCard = ({ task }) => (
+const TaskCard = ({ task, onStatusChange, onTaskTextChange }) => (
   <Segment>
     <Grid divided>
       <Grid.Row style={{ paddingTop: 0, paddingBottom: 0 }}>
@@ -70,12 +77,24 @@ const TaskCard = ({ task }) => (
             textAlign: 'center',
             maxHeight: '120px',
             overflow: 'auto',
-            backgroundColor: task.status === 0 ? '#c3c3c3' : '#56d273'
+            backgroundColor: task.status === 0 ? '#57b7ad' : '#56d273'
           }}
         >
           <h3 style={{ backgroundColor: '#f1f1f1' }}>Status</h3>
-          <Divider fitted />
-          <h3>{task.status === 0 ? 'In progress' : 'Completed'}</h3>
+
+          <Grid.Column
+            as={Button}
+            onClick={() => onStatusChange(task)}
+            style={{
+              margin: 0,
+              padding: '.2em 0em',
+              width: '100%',
+              height: '80%',
+              backgroundColor: task.status === 0 ? '#57b7ad' : '#56d273'
+            }}
+          >
+            {task.status === 0 ? 'In progress' : 'Completed'}
+          </Grid.Column>
         </Grid.Column>
 
         <Grid.Column
@@ -86,13 +105,25 @@ const TaskCard = ({ task }) => (
             marginRight: '0',
             textAlign: 'center',
             maxHeight: '120px',
-            overflow: 'auto',
             backgroundColor: '#c3c3c3'
           }}
         >
           <h3 style={{ backgroundColor: '#f1f1f1' }}>Description</h3>
-          <Divider fitted />
-          <p>{task.text}</p>
+
+          <TextArea
+            value={task.text}
+            onChange={e => {
+              onTaskTextChange(e, task)
+            }}
+            style={{
+              width: '100%',
+              height: '80%',
+              background: '#c3c3c3',
+              outline: 'none',
+              border: 'none',
+              resize: 'none'
+            }}
+          />
         </Grid.Column>
       </Grid.Row>
     </Grid>
@@ -106,7 +137,13 @@ TaskCard.propTypes = {
     text: PropTypes.string,
     status: PropTypes.number,
     image_path: PropTypes.string
-  }).isRequired
+  }).isRequired,
+  onStatusChange: PropTypes.func,
+  onTaskTextChange: PropTypes.func
+}
+TaskCard.defaultProps = {
+  onStatusChange: () => {},
+  onTaskTextChange: () => {}
 }
 
 export default TaskCard

@@ -1,11 +1,9 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { Menu, Dropdown, Image } from 'semantic-ui-react'
-// import PropTypes from 'prop-types'
-// import getGravatar from 'get-gravatar'
 
 const TopNavigation = () => (
-  <Menu secondary pointing>
+  <Menu  pointing inverted>
     <Menu.Item as={Link} to="/dashboard/1">
       Dashboard
     </Menu.Item>
@@ -19,8 +17,5 @@ const TopNavigation = () => (
     </Menu.Menu>
   </Menu>
 )
-TopNavigation.propTypes = {
-  // user: PropTypes.shape({ email: PropTypes.string })
-}
 
 export default TopNavigation
